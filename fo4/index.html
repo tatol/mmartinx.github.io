@@ -1,14 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Fallout 4 Character Planner</title>
+    <title class="title-label"></title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/site.css" />
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 </head>
 <body>
-    <a href="https://github.com/mmartinx/mmartinx.github.io/"><img style="z-index:999;position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -16,10 +15,12 @@
                     <img alt="Brand" src="img/brand.jpg" style="height:20px;width:20px;">
                 </a>
                 <a class="navbar-brand" href="#">
-                    Fallout 4 Character Planner
+                    <span class="navbar-label"></span>
                 </a>
                 <form class="navbar-form navbar-left">
-                    <a href="/fo4" class="btn btn-danger">Reset</a>
+                    <a href="/fo4" class="btn btn-danger">
+                        <span class="reset-label"></span>
+                    </a>
                 </form>
             </div>
         </div>
@@ -28,11 +29,11 @@
         <div class="row">
             <div class="col-md-3">
                 <h3>S.P.E.C.I.A.L.</h3>
-                <span class="bold points-left"></span> points left<!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-weight:normal;"><input type="checkbox" class="include-bobbleheads" /> Include bobbleheads</label>-->
+                <span class="bold points-left"></span>
+                <span class="points-left-label"></span>
                 <ul class="list-group list-special">
                     <li data-special="st" class="list-group-item clearfix">
-                        STRENGTH
-
+                        <span class="special-label"></span>
                         <span class="pull-right">
                             <button class="btn btn-primary btn-xs btn-dec"><i class="glyphicon glyphicon-minus"></i></button>
                             <input type="number" min="1" max="10" class="form-control" value="1" />
@@ -40,8 +41,7 @@
                         </span>
                     </li>
                     <li data-special="pe" class="list-group-item clearfix">
-                        PERCEPTION
-
+                        <span class="special-label"></span>
                         <span class="pull-right">
                             <button class="btn btn-primary btn-xs btn-dec"><i class="glyphicon glyphicon-minus"></i></button>
                             <input type="number" min="1" max="10" class="form-control" value="1" />
@@ -49,8 +49,7 @@
                         </span>
                     </li>
                     <li data-special="en" class="list-group-item clearfix">
-                        ENDURANCE
-
+                        <span class="special-label"></span>
                         <span class="pull-right">
                             <button class="btn btn-primary btn-xs btn-dec"><i class="glyphicon glyphicon-minus"></i></button>
                             <input type="number" min="1" max="10" class="form-control" value="1" />
@@ -58,8 +57,7 @@
                         </span>
                     </li>
                     <li data-special="ch" class="list-group-item clearfix">
-                        CHARISMA
-
+                        <span class="special-label"></span>
                         <span class="pull-right">
                             <button class="btn btn-primary btn-xs btn-dec"><i class="glyphicon glyphicon-minus"></i></button>
                             <input type="number" min="1" max="10" class="form-control" value="1" />
@@ -67,8 +65,7 @@
                         </span>
                     </li>
                     <li data-special="in" class="list-group-item clearfix">
-                        INTELLIGENCE
-
+                        <span class="special-label"></span>
                         <span class="pull-right">
                             <button class="btn btn-primary btn-xs btn-dec"><i class="glyphicon glyphicon-minus"></i></button>
                             <input type="number" min="1" max="10" class="form-control" value="1" />
@@ -76,8 +73,7 @@
                         </span>
                     </li>
                     <li data-special="ag" class="list-group-item clearfix">
-                        AGILITY
-
+                        <span class="special-label"></span>
                         <span class="pull-right">
                             <button class="btn btn-primary btn-xs btn-dec"><i class="glyphicon glyphicon-minus"></i></button>
                             <input type="number" min="1" max="10" class="form-control" value="1" />
@@ -85,8 +81,7 @@
                         </span>
                     </li>
                     <li data-special="lu" class="list-group-item clearfix">
-                        LUCK
-
+                        <span class="special-label"></span>
                         <span class="pull-right">
                             <button class="btn btn-primary btn-xs btn-dec"><i class="glyphicon glyphicon-minus"></i></button>
                             <input type="number" min="1" max="10" class="form-control" value="1" />
@@ -94,14 +89,19 @@
                         </span>
                     </li>
                 </ul>
-                <h4>Summary:</h4>
-                Required level: <span class="required-level">1</span>
+                <h4 class="summary-label"></h4>
+                <span class="required-label"></span>
+                <span class="required-level">1</span>
                 <ul class="summary">
 
                 </ul>
+                <select id= "languageSelect">
+                    <option>RU</option>
+                    <option>EN</option>
+                </select>
             </div>
             <div class="col-md-9">
-                <h3>Perks</h3>
+                <h3 class="perks-label"></h3>
                 <table class="table"></table>
             </div>
         </div>
@@ -109,6 +109,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="js/perks.js"></script>
+    <script src="js/local.js"></script>
     <script src="js/scripts.js"></script>
 </body>
 </html>

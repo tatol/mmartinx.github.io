@@ -1,12 +1,21 @@
 var totalPoints = 28;
 
+var getLanguage = function () {
+    var e = document.getElementById("languageSelect");
+    return e.options[e.selectedIndex].value;
+}
+
+var getLabel = function () {
+    return getLanguage() === 'RU' ? 'labelRU' : 'label';
+}
+
 var renderPerks = function () {
     var html = '',
         special = getSPECIAL();
 
     html += '<tr>';
     for (var i = 0; i < special.length; ++i) {
-        html += '<th>' + special[i].special.toUpperCase() + ': ' + special[i].value + '</th>';
+        html += '<th>' + special[i].label + ': ' + special[i].value + '</th>';
     }
     html += '</tr>';
 
@@ -23,10 +32,10 @@ var renderPerks = function () {
             var title = '';
             title += perk.ranked.map(function (rank) {
                 var rankClass = perk.currentRank >= rank.rank ? 'has-rank' : 'no-rank';
-                return '<p class=' + rankClass + '>Rank ' + rank.rank + ' (' + rank.level + '): ' + rank.description + '</p>';
+                return '<p class=' + rankClass + '>' + rankLabel[getLabel()] + ' ' + rank.rank + ' (' + rank.level + '): ' + rank[getLabel()] + '</p>';
             }).join('');
 
-            html += '<td><div data-placement="left" data-trigger="hover" data-original-title="' + perk.name + '" rel="popover" data-html="true" data-content="' + title + '" data-i="' + i + '" data-j="' + j + '" class="perk' + className + '" style="background-image:url(\'img/' + perk.img + '\');">';
+            html += '<td><div data-placement="left" data-trigger="hover" data-original-title="' + perk[getLabel()] + '" rel="popover" data-html="true" data-content="' + title + '" data-i="' + i + '" data-j="' + j + '" class="perk' + className + '" style="background-image:url(\'img/' + perk.img + '\');">';
             if (className !== ' unavailable') {
                 html += '<div class="overlay"><button class="btn btn-xs btn-danger btn-dec-perk"><i class="glyphicon glyphicon-minus"></i></button>&nbsp;' + perk.currentRank + '/' + perk.ranks + '&nbsp;<button class="btn btn-xs btn-success btn-inc-perk"><i class="glyphicon glyphicon-plus"></i></button></div>';
             }
@@ -40,7 +49,8 @@ var renderPerks = function () {
 var getJSON = function () {
     return btoa(JSON.stringify({
         s: getSPECIALShort(),
-        r: getRanks()
+        r: getRanks(),
+        l: getLanguage()
     }));
 }
 
@@ -70,12 +80,37 @@ var getSPECIALShort = function () {
 
 var getSPECIAL = function () {
     return $('[data-special]').map(function () {
+        var special = $(this).data('special');
         return {
-            special: $(this).data('special'),
-            value: $(this).find('input').val()
+            special: special,
+            value: $(this).find('input').val(),
+            label: getSPECIALLabel(special).substring(0, 2).toUpperCase()
         };
     });
 };
+
+var getSPECIALLabel = function (special) {
+    return perks.find(function (v) {
+        return v.special === special;
+    })[getLabel()];
+};
+
+var renderSPECIALLabel = function () {
+    return $('[data-special]').map(function () {
+        var description = getSPECIALLabel($(this).data('special'));
+        $(this).find('.special-label').text(description);
+    });
+}
+
+var renderOtherLabels = function () {
+    $('.required-label').text(requiredLevelLabel[getLabel()]);
+    $('.summary-label').text(summaryLabel[getLabel()]);
+    $('.perks-label').text(perksLabel[getLabel()]);
+    $('.points-left-label').text(pointsLeftLabel[getLabel()]);
+    $('.title-label').text(titleLabel[getLabel()]);
+    $('.navbar-label').text(titleLabel[getLabel()]);
+    $('.reset-label').text(resetLabel[getLabel()]);
+}
 
 var requiredLevel = function () {
     var total = 0;
@@ -112,10 +147,12 @@ var renderRequiredLevel = function () {
 }
 
 var renderAll = function () {
+    renderSPECIALLabel();
     renderPerks();
     calculatePoints();
     renderRequiredLevel();
     renderSummary();
+    renderOtherLabels();
     window.location.hash = '#' + getJSON();
 }
 
@@ -155,10 +192,10 @@ var renderSummary = function () {
         for (var j = 0; j < perks[i].perks.length; ++j) {
             var perk = perks[i].perks[j];
             if (perk.currentRank && perk.currentRank > 0) {
-                html += '<li>' + perk.name + ': ' + perk.currentRank + '/' + perk.ranks + '</li>';
+                html += '<li>' + perk[getLabel()] + ': ' + perk.currentRank + '/' + perk.ranks + '</li>';
                 html += '<ul>';
                 for (var k = 0; k < perk.currentRank; ++k) {
-                    html += '<li>' + perk.ranked[k].description + '</li>';
+                    html += '<li>' + perk.ranked[k][getLabel()] + '</li>';
                 }
                 html += '</ul>';
             }
@@ -176,6 +213,7 @@ $(function () {
         $('input[type=number]').each(function (index) {
             $(this).val(load.s[index]);
         });
+        $('#languageSelect').val(load.l);
 
         for (var i = 0; i < load.r.length; ++i) {
             var key = Object.keys(load.r[i])[0],
@@ -255,6 +293,10 @@ $(function () {
             }
         }
 
+        renderAll();
+    });
+
+    $('#languageSelect').on('change', function () {
         renderAll();
     });
 });
